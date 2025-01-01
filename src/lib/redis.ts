@@ -5,7 +5,7 @@ export const redis = new Redis({
     port: (process.env.REDIS_PORT as unknown as number) || 6379
 });
 
-interface Message {
+export interface Message {
     sender: string;
     message: string;
     timestamp: number;
