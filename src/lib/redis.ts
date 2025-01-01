@@ -5,6 +5,10 @@ export const redis = new Redis({
     port: (process.env.REDIS_PORT as unknown as number) || 6379
 });
 
+redis.on("connect", () => {
+    console.log("Connected to Redis");
+});
+
 export interface Message {
     sender: string;
     message: string;
@@ -22,7 +26,7 @@ export async function storeMessage(room: string, message: Message) {
 }
 
 export async function getMessages(room: string): Promise<Message[]> {
-    const messages = redis.lrange(`chat:${room}`, 0, -1); // get all messages
+    const messages = await redis.lrange(`chat:${room}`, 0, -1); // get all messages
 
     return (await messages)
         .map((msg) => {
